@@ -30,7 +30,7 @@ protected:
     float scale{4.0f};
     Vector2 velocity{};
 private:
-
+    
 };
 
 #endif
