@@ -1,75 +1,71 @@
 #include "Character.h"
 #include "raymath.h"
 
-Character::Character(int winWidth, int winHeight) :
-    windowWidth(winWidth),
-    windowHeight(winHeight)
+Character::Character(int screenW, int screenH) // constructor
 {
-    width = texture.width / maxFrames;
+    width = texture.width / charSprites;
     height = texture.height;
+    screenVec = {(float)screenW / 2.0f - charScale * (0.5f * width),
+                 (float)screenH / 2.0f - charScale * (0.5f * height)};
 }
 
-Vector2 Character::getScreenPos()
-{
-    return Vector2{
-        static_cast<float>(windowWidth) / 2.0f - scale * (0.5f * width),
-        static_cast<float>(windowHeight) / 2.0f - scale * (0.5f * height)
-    };
-} 
+// void Character::setScreenVec(int winW, int winH)
+// {
+//     screenVec = {
+//         (float)winW / 2.0f - charScale * (0.5f * width),
+//         (float)winH / 2.0f - charScale * (0.5f * height)};
+// }
 
-void Character::tick(float deltaTime)
+void Character::tick(float dt)
 {
-    if (!getAlive()) return;
+    //dt = GetFrameTime();
+    worldVecLastFrame = worldVec; // for map boundaries
+
+    Vector2 direction{0.0, 0.0};
 
     if (IsKeyDown(KEY_A))
-        velocity.x -= 1.0;
+        direction.x -= 1.0;
     if (IsKeyDown(KEY_D))
-        velocity.x += 1.0;
+        direction.x += 1.0;
     if (IsKeyDown(KEY_W))
-        velocity.y -= 1.0;
+        direction.y -= 1.0;
     if (IsKeyDown(KEY_S))
-        velocity.y += 1.0;
-    BaseCharacter::tick(deltaTime);
+        direction.y += 1.0;
 
-    Vector2 origin{};
-    Vector2 offset{};
-    float rotation{};
-    if (rightLeft > 0.f)
+    if (IsKeyDown(KEY_LEFT_SHIFT))
+        speed = 6.0;
+    else
+        speed = 3.0;
+
+    if (Vector2Length(direction) != 0.0)
     {
-        origin = {0.f, weapon.height * scale};
-        offset = {35.f, 55.f};
-        weaponCollisionRec = {
-            getScreenPos().x + offset.x,
-            getScreenPos().y + offset.y - weapon.height * scale,
-            weapon.width * scale,
-            weapon.height * scale
-        };
-        rotation = IsMouseButtonDown(MOUSE_LEFT_BUTTON) ? 35.f : 0.f;
+        //normalize the vector so it has a length of 1.0
+        //then scale it to the speed setting provided
+        //then use subtract to move it in the negative direction
+        //(so it scrolls opposite of direction keys)
+        worldVec = Vector2Add(worldVec, Vector2Scale(Vector2Normalize(direction), speed));
+        direction.x < 0.0f ? rightleft = -1.0f : rightleft = 1.0f;
+        texture = run;
     }
     else
+        texture = idle;
+
+    runningTime += dt;
+    if (runningTime >= updateTime)
     {
-        origin = {weapon.width * scale, weapon.height * scale};
-        offset = {25.f, 55.f};
-        weaponCollisionRec = {
-            getScreenPos().x + offset.x - weapon.width * scale,
-            getScreenPos().y + offset.y - weapon.height * scale,
-            weapon.width * scale,
-            weapon.height * scale
-        };
-        rotation = IsMouseButtonDown(MOUSE_LEFT_BUTTON) ? -35.f : 0.f;
+        frame++;
+        runningTime = 0.0f;
+        if (frame > charSprites)
+            frame = 0;
     }
 
-    // draw the sword
-    Rectangle source{0.f, 0.f, static_cast<float>(weapon.width) * rightLeft, static_cast<float>(weapon.height)};
-    Rectangle dest{getScreenPos().x + offset.x, getScreenPos().y + offset.y, weapon.width * scale, weapon.height * scale};
-    DrawTexturePro(weapon, source, dest, origin, rotation, WHITE);
+    Rectangle charRecSrc{0.0f + ((float)frame * width), 0.0f, rightleft * width, height};
+    Rectangle charRecDest{screenVec.x, screenVec.y, width * charScale, height * charScale};
+    DrawTexturePro(texture, charRecSrc, charRecDest, charOrigin, 0.0f, WHITE);
 }
 
-void Character::takeDamage(float damage)
+// map boundaries
+void Character::undoMovement()
 {
-    health -= damage;
-    if (health <= 0.f)
-    {
-        setAlive(false);
-    }
+    worldVec = worldVecLastFrame;
 }
