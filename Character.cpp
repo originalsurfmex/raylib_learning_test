@@ -5,21 +5,14 @@ Character::Character(int screenW, int screenH) // constructor
 {
     width = texture.width / charSprites;
     height = texture.height;
-    screenVec = {(float)screenW / 2.0f - charScale * (0.5f * width),
-                 (float)screenH / 2.0f - charScale * (0.5f * height)};
+    screenPos = {static_cast<float>(screenW) / 2.0f - charScale * (0.5f * width),
+                 static_cast<float>(screenH) / 2.0f - charScale * (0.5f * height)};
 }
-
-// void Character::setScreenVec(int winW, int winH)
-// {
-//     screenVec = {
-//         (float)winW / 2.0f - charScale * (0.5f * width),
-//         (float)winH / 2.0f - charScale * (0.5f * height)};
-// }
 
 void Character::tick(float dt)
 {
-    //dt = GetFrameTime();
-    worldVecLastFrame = worldVec; // for map boundaries
+    dt = GetFrameTime();
+    worldPosLastFrame = worldPos; // for map boundaries
 
     Vector2 direction{0.0, 0.0};
 
@@ -43,7 +36,7 @@ void Character::tick(float dt)
         //then scale it to the speed setting provided
         //then use subtract to move it in the negative direction
         //(so it scrolls opposite of direction keys)
-        worldVec = Vector2Add(worldVec, Vector2Scale(Vector2Normalize(direction), speed));
+        worldPos = Vector2Add(worldPos, Vector2Scale(Vector2Normalize(direction), speed));
         direction.x < 0.0f ? rightleft = -1.0f : rightleft = 1.0f;
         texture = run;
     }
@@ -59,13 +52,13 @@ void Character::tick(float dt)
             frame = 0;
     }
 
-    Rectangle charRecSrc{0.0f + ((float)frame * width), 0.0f, rightleft * width, height};
-    Rectangle charRecDest{screenVec.x, screenVec.y, width * charScale, height * charScale};
+    Rectangle charRecSrc{0.0f + (static_cast<float>(frame) * width), 0.0f, rightleft * width, height};
+    Rectangle charRecDest{screenPos.x, screenPos.y, width * charScale, height * charScale};
     DrawTexturePro(texture, charRecSrc, charRecDest, charOrigin, 0.0f, WHITE);
 }
 
 // map boundaries
 void Character::undoMovement()
 {
-    worldVec = worldVecLastFrame;
+    worldPos = worldPosLastFrame;
 }
