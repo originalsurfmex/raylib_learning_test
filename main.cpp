@@ -17,7 +17,6 @@ int main()
 
     Character knight(windowHW, windowHW);
     Prop rock(Vector2{200.0f, 300.0f}, LoadTexture("nature_tileset/Rock.png"));
-    //Prop rock(Vector2{0.0f, 0.0f}, LoadTexture("nature_tileset/Rock.png"));
 
     /* ------------------------------- while loop ------------------------------- */
     while (!WindowShouldClose())
@@ -31,10 +30,6 @@ int main()
 
         //rock.Render(knight.getWorldPos());
         knight.tick(dt);
-        //rock.Render(knight.getWorldPos());
-        rock.Render(mapVec);
-        //rock.Render(Vector2{200.0f, 300.0f});
-        //rock.tick(dt, knight.getWorldPos()); //trying to fix glitch
         //rock.Render(knight.getWorldPos()); //if its placed here it glitches
 
         //map boundaries

@@ -17,8 +17,8 @@ private:
     Vector2 charOrigin{}; //to draw character with DrawTexturePro
     float charScale{4.0};
     int charSprites{6};
-    //right = 1, left = -1
-    float rightleft{1.0f};
+    float rightleft{1.0f}; //right = 1, left = -1
+
     //animation
     float runningTime{};
     int frame{};
