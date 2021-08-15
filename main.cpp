@@ -17,10 +17,9 @@ int main()
     Vector2 mapVec = {0.0f, 0.0f};
 
     Character knight(windowHW, windowHW);
-    Enemy goon(Vector2{50, 50}, Vector2{},
+    Enemy goon(Vector2{550, 450},
                LoadTexture("characters/goblin_idle_spritesheet.png"),
                LoadTexture("characters/goblin_run_spritesheet.png"));
-    //Enemy goon(Vector2{50, 50}, Vector2{}, Texture2D{}, Texture2D{});
 
     Prop props[2]{
         Prop{Vector2{200.0f, 400.0f}, LoadTexture("nature_tileset/Rock.png")},
@@ -44,8 +43,8 @@ int main()
                 knight.undoMovement();
         }
         knight.tick(dt);
+        goon.setTarget(&knight); //must come before goon.tick(dt) so he can chase
         goon.tick(dt);
-        //goon.setTarget(&knight);
         //DrawRectangleRec(knight.collisionRectangle, RED); //test collision rectangle
         //rock.Render(knight.getWorldPos()); // fix the 'depth fighting'
 
@@ -59,8 +58,10 @@ int main()
             knight.undoMovement();
         }
 
-        DrawText(TextFormat("X: %0.0f", -mapVec.x), 10, 10, 10, WHITE);
-        DrawText(TextFormat("Y: %0.0f", -mapVec.y), 10, 20, 10, WHITE);
+        //DrawText(TextFormat("X: %0.0f", -mapVec.x), 10, 10, 10, WHITE);
+        DrawText(TextFormat("X: %0.0f", knight.getWorldPos().x), 10, 10, 10, WHITE);
+        //DrawText(TextFormat("Y: %0.0f", -mapVec.y), 10, 20, 10, WHITE);
+        DrawText(TextFormat("Y: %0.0f", knight.getWorldPos().y), 10, 20, 10, WHITE);
         EndDrawing();
     }
     CloseWindow();

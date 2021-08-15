@@ -9,10 +9,7 @@ BaseCharacter::BaseCharacter()
 /* ------------------------------ tick function ----------------------------- */
 void BaseCharacter::tick(float dt)
 {
-    dt = GetFrameTime();
     worldPosLastFrame = worldPos; // for map boundaries
-
-
 
     runningTime += dt;
     if (runningTime >= updateTime)
