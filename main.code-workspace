@@ -2,10 +2,6 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"name": "top-down-game",
-			"path": "..\\..\\GameDev.tv\\top-down-game"
 		}
 	],
 	"settings": {

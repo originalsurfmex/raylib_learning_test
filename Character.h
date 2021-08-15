@@ -6,6 +6,7 @@ public:
     Vector2 getWorldPos() { return worldPos; }
     void tick(float dt);
     void undoMovement(); // map boundaries
+    Rectangle collisionRectangle{};
 
 private:
     Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};

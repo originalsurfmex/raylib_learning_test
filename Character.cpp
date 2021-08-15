@@ -7,6 +7,7 @@ Character::Character(int screenW, int screenH) // constructor
     height = texture.height;
     screenPos = {static_cast<float>(screenW) / 2.0f - charScale * (0.5f * width),
                  static_cast<float>(screenH) / 2.0f - charScale * (0.5f * height)};
+    collisionRectangle = {};
 }
 
 void Character::tick(float dt)
@@ -55,6 +56,8 @@ void Character::tick(float dt)
     Rectangle charRecSrc{0.0f + (static_cast<float>(frame) * width), 0.0f, rightleft * width, height};
     Rectangle charRecDest{screenPos.x, screenPos.y, width * charScale, height * charScale};
     DrawTexturePro(texture, charRecSrc, charRecDest, charOrigin, 0.0f, WHITE);
+    /* --------------------------- collision rectangle -------------------------- */
+    collisionRectangle = {screenPos.x, screenPos.y, charRecDest.width, charRecDest.height};
 }
 
 // map boundaries

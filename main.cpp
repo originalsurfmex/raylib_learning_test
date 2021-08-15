@@ -16,7 +16,9 @@ int main()
     Vector2 mapVec = {0.0f, 0.0f};
 
     Character knight(windowHW, windowHW);
-    Prop rock(Vector2{200.0f, 300.0f}, LoadTexture("nature_tileset/Rock.png"));
+    Prop props[2]{
+        Prop{Vector2{200.0f, 400.0f}, LoadTexture("nature_tileset/Rock.png")},
+        Prop{Vector2{300.0f, 600.0f}, LoadTexture("nature_tileset/Log.png")}};
 
     /* ------------------------------- while loop ------------------------------- */
     while (!WindowShouldClose())
@@ -28,9 +30,16 @@ int main()
         mapVec = Vector2Scale(knight.getWorldPos(), -1.0f);
         DrawTextureEx(map, mapVec, 0.0, mapScale, WHITE);
 
-        //rock.Render(knight.getWorldPos());
+        for (auto prop : props)
+        {
+            prop.Render(knight.getWorldPos());
+            //DrawRectangleRec(prop.collisionRectangle, BLUE); //test collision rectangle
+            if (CheckCollisionRecs(prop.collisionRectangle, knight.collisionRectangle))
+                knight.undoMovement();
+        }
         knight.tick(dt);
-        //rock.Render(knight.getWorldPos()); //if its placed here it glitches
+        //DrawRectangleRec(knight.collisionRectangle, RED); //test collision rectangle
+        //rock.Render(knight.getWorldPos()); // fix the 'depth fighting'
 
         //map boundaries
         if (knight.getWorldPos().x < 0.0f ||
@@ -40,9 +49,8 @@ int main()
         {
             //this prevents leaving boundaries before the next frame is refreshed
             knight.undoMovement();
-            //rock.undoMovement(); //trying to fix that glitch
         }
-
+   
         DrawText(TextFormat("X: %0.0f", -mapVec.x), 10, 10, 10, WHITE);
         DrawText(TextFormat("Y: %0.0f", -mapVec.y), 10, 20, 10, WHITE);
         EndDrawing();
