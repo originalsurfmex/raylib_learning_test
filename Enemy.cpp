@@ -1,35 +1,25 @@
-#include "Character.h"
+#include "Enemy.h"
 #include "raymath.h"
 
-Character::Character(int screenW, int screenH) // constructor
+// Enemy::Enemy(Vector2 pos, Vector2 charPos, Texture2D idle_tex, Texture2D run_tex) : texture(idle_tex),
+//                                                                                     idle(idle_tex),
+//                                                                                     run(run_tex)
+Enemy::Enemy(Vector2 pos, Vector2 charPos)
 {
-    width = texture.width / charSprites;
+    worldPos = pos;
+    //texture = idle_tex;
+    //idle = idle_tex;
+    //run = run_tex;
+    width = texture.width / maxFrames;
     height = texture.height;
-    screenPos = {static_cast<float>(screenW) / 2.0f - charScale * (0.5f * width),
-                 static_cast<float>(screenH) / 2.0f - charScale * (0.5f * height)};
-    collisionRectangle = {};
-}
+};
 
-void Character::tick(float dt)
+void Enemy::tick(float dt)
 {
     dt = GetFrameTime();
     worldPosLastFrame = worldPos; // for map boundaries
 
     Vector2 direction{0.0, 0.0};
-
-    if (IsKeyDown(KEY_A))
-        direction.x -= 1.0;
-    if (IsKeyDown(KEY_D))
-        direction.x += 1.0;
-    if (IsKeyDown(KEY_W))
-        direction.y -= 1.0;
-    if (IsKeyDown(KEY_S))
-        direction.y += 1.0;
-
-    if (IsKeyDown(KEY_LEFT_SHIFT))
-        speed = 6.0;
-    else
-        speed = 3.0;
 
     if (Vector2Length(direction) != 0.0)
     {
@@ -59,9 +49,3 @@ void Character::tick(float dt)
     /* --------------------------- collision rectangle -------------------------- */
     collisionRectangle = {screenPos.x, screenPos.y, charRecDest.width, charRecDest.height};
 }
-
-// // map boundaries
-// void Character::undoMovement()
-// {
-//     worldPos = worldPosLastFrame;
-// }

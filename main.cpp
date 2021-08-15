@@ -2,6 +2,7 @@
 #include "raymath.h"
 #include "Character.h"
 #include "Prop.h"
+#include "Enemy.h"
 
 int main()
 {
@@ -16,6 +17,10 @@ int main()
     Vector2 mapVec = {0.0f, 0.0f};
 
     Character knight(windowHW, windowHW);
+    // Enemy goon(Vector2{50, 50}, Vector2{}, LoadTexture("characters/goblin_idle_spritesheet.png"),
+    //            LoadTexture("characters/goblin_run_spritesheet.png"));
+    Enemy goon(Vector2{50, 50}, Vector2{});
+
     Prop props[2]{
         Prop{Vector2{200.0f, 400.0f}, LoadTexture("nature_tileset/Rock.png")},
         Prop{Vector2{300.0f, 600.0f}, LoadTexture("nature_tileset/Log.png")}};
@@ -38,6 +43,7 @@ int main()
                 knight.undoMovement();
         }
         knight.tick(dt);
+        goon.tick(dt);
         //DrawRectangleRec(knight.collisionRectangle, RED); //test collision rectangle
         //rock.Render(knight.getWorldPos()); // fix the 'depth fighting'
 
@@ -50,7 +56,7 @@ int main()
             //this prevents leaving boundaries before the next frame is refreshed
             knight.undoMovement();
         }
-   
+
         DrawText(TextFormat("X: %0.0f", -mapVec.x), 10, 10, 10, WHITE);
         DrawText(TextFormat("Y: %0.0f", -mapVec.y), 10, 20, 10, WHITE);
         EndDrawing();
