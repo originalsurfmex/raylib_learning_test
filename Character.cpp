@@ -12,11 +12,9 @@ Character::Character(int screenW, int screenH) // constructor
 
 void Character::tick(float dt)
 {
-    dt = GetFrameTime();
-    worldPosLastFrame = worldPos; // for map boundaries
+    BaseCharacter::tick(dt); //take all original tick moves from here
 
     Vector2 direction{0.0, 0.0};
-
     if (IsKeyDown(KEY_A))
         direction.x -= 1.0;
     if (IsKeyDown(KEY_D))
@@ -43,25 +41,4 @@ void Character::tick(float dt)
     }
     else
         texture = idle;
-
-    runningTime += dt;
-    if (runningTime >= updateTime)
-    {
-        frame++;
-        runningTime = 0.0f;
-        if (frame > charSprites)
-            frame = 0;
-    }
-
-    Rectangle charRecSrc{0.0f + (static_cast<float>(frame) * width), 0.0f, rightleft * width, height};
-    Rectangle charRecDest{screenPos.x, screenPos.y, width * charScale, height * charScale};
-    DrawTexturePro(texture, charRecSrc, charRecDest, charOrigin, 0.0f, WHITE);
-    /* --------------------------- collision rectangle -------------------------- */
-    collisionRectangle = {screenPos.x, screenPos.y, charRecDest.width, charRecDest.height};
 }
-
-// // map boundaries
-// void Character::undoMovement()
-// {
-//     worldPos = worldPosLastFrame;
-// }

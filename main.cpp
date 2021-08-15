@@ -17,9 +17,10 @@ int main()
     Vector2 mapVec = {0.0f, 0.0f};
 
     Character knight(windowHW, windowHW);
-    // Enemy goon(Vector2{50, 50}, Vector2{}, LoadTexture("characters/goblin_idle_spritesheet.png"),
-    //            LoadTexture("characters/goblin_run_spritesheet.png"));
-    Enemy goon(Vector2{50, 50}, Vector2{});
+    Enemy goon(Vector2{50, 50}, Vector2{},
+               LoadTexture("characters/goblin_idle_spritesheet.png"),
+               LoadTexture("characters/goblin_run_spritesheet.png"));
+    //Enemy goon(Vector2{50, 50}, Vector2{}, Texture2D{}, Texture2D{});
 
     Prop props[2]{
         Prop{Vector2{200.0f, 400.0f}, LoadTexture("nature_tileset/Rock.png")},
@@ -44,6 +45,7 @@ int main()
         }
         knight.tick(dt);
         goon.tick(dt);
+        //goon.setTarget(&knight);
         //DrawRectangleRec(knight.collisionRectangle, RED); //test collision rectangle
         //rock.Render(knight.getWorldPos()); // fix the 'depth fighting'
 

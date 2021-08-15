@@ -1,5 +1,6 @@
 #ifndef BASE_CHARACTER_H
 #define BASE_CHARACTER_H
+
 #include "raylib.h"
 
 class BaseCharacter
@@ -31,9 +32,9 @@ public:
     //BaseCharacter(int screenW, int screenH);
     BaseCharacter();
     Vector2 getWorldPos() { return worldPos; }
-    //void tick(float dt);
-    Rectangle collisionRectangle{};
+    Rectangle collisionRectangle{}; //make this a function instead of exposing a variable
     void undoMovement(); // map boundaries
+    virtual void tick(float dt);
 };
 
 #endif
