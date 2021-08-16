@@ -25,7 +25,6 @@ void BaseCharacter::tick(float dt)
         //then scale it to the speed setting provided
         //then use subtract to move it in the negative direction
         //(so it scrolls opposite of direction keys)
-
         //set world pos = worldpos + velocity
         worldPos = Vector2Add(worldPos, Vector2Scale(Vector2Normalize(velocity), speed));
         velocity.x < 0.0f ? rightleft = -1.0f : rightleft = 1.0f;

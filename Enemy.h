@@ -11,10 +11,5 @@ public:
     virtual Vector2 getScreenPos() override;
 
 private:
-/* --------- the textures need to be commented out because Character -------- */
-/* ---------- has them too and its an #include, causes weird issues --------- */
-    //Texture2D texture{LoadTexture("characters/goblin_idle_spritesheet.png")};
-    //Texture2D idle{LoadTexture("characters/goblin_idle_spritesheet.png")};
-    //Texture2D run{LoadTexture("characters/goblin_run_spritesheet.png")};
     Character* target;
 };
