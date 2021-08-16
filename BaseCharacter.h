@@ -25,16 +25,22 @@ protected:
     float speed{2.0f};
     float width{};
     float height{};
+    float scale{4.0f};
     const int maxFrames{charSprites};
     const float updateTime{1.0f / 16.0f};
+
+    //direction & speed of character
+    Vector2 velocity{};
 
 public:
     //BaseCharacter(int screenW, int screenH);
     BaseCharacter();
     Vector2 getWorldPos() { return worldPos; }
     Rectangle collisionRectangle{}; //make this a function instead of exposing a variable
+    Rectangle getCollisionRectangle();
     void undoMovement(); // map boundaries
     virtual void tick(float dt);
+    virtual Vector2 getScreenPos() = 0; //** this is now an abstract class 
 };
 
 #endif
