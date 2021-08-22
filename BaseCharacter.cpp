@@ -37,8 +37,6 @@ void BaseCharacter::tick(float dt)
     Rectangle charRecSrc{0.0f + (static_cast<float>(frame) * width), 0.0f, rightleft * width, height};
     Rectangle charRecDest{getScreenPos().x, getScreenPos().y, width * charScale, height * charScale};
     DrawTexturePro(texture, charRecSrc, charRecDest, charOrigin, 0.0f, WHITE);
-    /* --------------------------- collision rectangle -------------------------- */
-    collisionRectangle = {getScreenPos().x, getScreenPos().y, charRecDest.width, charRecDest.height};
 }
 
 /* ---------------------- map boundary, collisions, etc --------------------- */

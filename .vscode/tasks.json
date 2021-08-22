@@ -85,6 +85,8 @@
             "label": "C/C++: gcc.exe build active file",
             "command": "C:/raylib/mingw/bin/gcc.exe",
             "args": [
+                "-Ofast",
+                "-flto",
                 "-g",
                 "${file}",
                 "-o",

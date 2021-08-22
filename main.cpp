@@ -37,15 +37,16 @@ int main()
 
         for (auto prop : props)
         {
-            prop.Render(knight.getWorldPos());
-            //DrawRectangleRec(prop.collisionRectangle, BLUE); //test collision rectangle
-            if (CheckCollisionRecs(prop.collisionRectangle, knight.collisionRectangle))
+            prop.setTarget(&knight);
+            prop.Render();
+            DrawRectangleLinesEx(prop.getCollisionRectangle(), 1, BLUE); //test collision rectangle
+            if (CheckCollisionRecs(prop.getCollisionRectangle(), knight.getCollisionRectangle()))
                 knight.undoMovement();
         }
         knight.tick(dt);
         goon.setTarget(&knight); //must come before goon.tick(dt) so he can chase
         goon.tick(dt);
-        //DrawRectangleRec(knight.collisionRectangle, RED); //test collision rectangle
+        DrawRectangleLinesEx(knight.getCollisionRectangle(), 2, RED); //test collision rectangle
         //rock.Render(knight.getWorldPos()); // fix the 'depth fighting'
 
         //map boundaries

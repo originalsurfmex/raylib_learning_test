@@ -4,13 +4,25 @@
 Prop::Prop(Vector2 pos, Texture2D tex) : worldPos(pos),
                                          texture(tex)
 {
+    width = static_cast<float>(texture.width);
+    height = static_cast<float>(texture.height);
 }
 
-void Prop::Render(Vector2 charPos)
+Vector2 Prop::getScreenPos()
 {
-    screenPos = Vector2Subtract(worldPos, charPos);
-    DrawTextureEx(texture, screenPos, 0.0f, scale, WHITE);
-    collisionRectangle = {screenPos.x, screenPos.y,
-                          static_cast<float>(texture.width * scale),
-                          static_cast<float>(texture.height * scale)};
+    return Vector2Subtract(worldPos, target->getWorldPos());
+}
+
+Rectangle Prop::getCollisionRectangle()
+{
+    return Rectangle{
+        getScreenPos().x,
+        getScreenPos().y,
+        width * scale,
+        height * scale};
+}
+
+void Prop::Render()
+{
+    DrawTextureEx(texture, getScreenPos(), 0.0f, scale, WHITE);
 }
