@@ -13,8 +13,10 @@ Enemy::Enemy(Vector2 pos, Texture2D idle_tex, Texture2D run_tex)
 
 void Enemy::tick(float dt)
 {
-   /* --------------------------- chase the character -------------------------- */
+    /* --------------------------- chase the character -------------------------- */
     velocity = Vector2Subtract(target->getScreenPos(), getScreenPos());
+    if (Vector2Length(velocity) < hitRadius)
+        velocity = {};
 
     BaseCharacter::tick(dt);
 }
@@ -22,4 +24,12 @@ void Enemy::tick(float dt)
 Vector2 Enemy::getScreenPos()
 {
     return Vector2Subtract(worldPos, target->getWorldPos());
+}
+
+Rectangle Enemy::getCollisionRectangle()
+{
+	Rectangle rectangle = BaseCharacter::getCollisionRectangle();
+	rectangle.height *= 0.65f;
+	rectangle.width *= 0.65f;
+	return rectangle;
 }

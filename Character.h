@@ -10,6 +10,7 @@ public:
     virtual void tick(float dt) override;
     virtual Vector2 getScreenPos() override;
     virtual Rectangle getCollisionRectangle() override;
+    Rectangle getSwordCollision() { return swordCollisionRec; }
 
 private:
     int windowWidth{};

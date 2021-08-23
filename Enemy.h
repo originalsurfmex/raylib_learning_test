@@ -9,6 +9,7 @@ public:
     virtual void tick(float dt) override;
     void setTarget(Character* character) {target = character;} 
     virtual Vector2 getScreenPos() override;
+    virtual Rectangle getCollisionRectangle() override;
 
 private:
     Character* target;

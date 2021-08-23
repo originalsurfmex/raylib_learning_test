@@ -18,7 +18,7 @@ protected:
 	int charSprites{6};
 	float rightleft{1.0f}; //right = 1, left = -1
 
-	//animation
+	/* -------------------------------- animation ------------------------------- */
 	float runningTime{};
 	int frame{};
 	float speed{2.0f};
@@ -28,8 +28,14 @@ protected:
 	const int maxFrames{charSprites};
 	const float updateTime{1.0f / 16.0f};
 
-	//direction & speed of character
+	/* --------------------- direction & speed of character --------------------- */
 	Vector2 velocity{};
+
+	/* ----------------------------- fighting stuff ----------------------------- */
+	float hitRadius{30.f};
+	bool alive = true;
+	float damage{100.f};
+	Rectangle collisionRectangle{};
 
 public:
 	//BaseCharacter(int screenW, int screenH);
@@ -39,6 +45,19 @@ public:
 	void undoMovement(); // map boundaries
 	virtual void tick(float dt);
 	virtual Vector2 getScreenPos() = 0; //** this is now an abstract class
+	float setSpeed(float CharSpeed) { return speed = CharSpeed; }
+
+	/* ----------------------------- fighting n jazz ---------------------------- */
+	void setDamage(float power) { damage -= power; }
+	float getDamage() { return damage; }
+	bool getAlive() { return alive; }
+	bool setAlive(bool aliveordead)
+	{
+		if (aliveordead)
+			alive = true;
+		else
+			alive = false;
+	}
 };
 
 #endif
